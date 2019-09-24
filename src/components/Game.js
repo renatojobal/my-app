@@ -45,19 +45,36 @@ class Game extends React.Component {
     });
   }
 
+  getDescription(move) { 
+    let desc;
+    const history = this.state.history;
+    const current = history[this.state.stepNumber];
+    const squares = current.squares.slice();
+    if (move) {
+      desc = "Go to move #" + move;
+
+    } else { 
+      desc = "Go to game start";
+    }
+    return desc;
+  }
+
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
 
     const moves = history.map((step, move) => {
-      const desc = move ? "Go to move #" + move : "Go to game start";
+      const desc = this.getDescription(move);
+
       return (
         <li key={move}>
           <button onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
       );
     });
+
+
 
     let status;
     if (winner) {
@@ -83,7 +100,6 @@ class Game extends React.Component {
   }
 }
 
-
 function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
@@ -104,5 +120,28 @@ function calculateWinner(squares) {
   return null;
 }
 
+function assingPosition(i) {
+  let count = 0;
+  let row = 0;
+  for (var j = 0; j < i; j++) {
+      count += 1;
+      if (count > 2) {
+          count = 0;
+      }
+  }
+  for (var d = 0; d < i; d++) {
+      if (i < 3) {
+          row = 0;
+      } else {
+          if (i < 6) {
+              row = 1;
+          } else {
+              row = 2
+          }
+      }
+  }
+  let pos = [row, count]
+  return pos;
+}
 
 export default Game;
